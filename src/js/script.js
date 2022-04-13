@@ -52,14 +52,43 @@
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
 
-  const app = {
-    init: function(){
+  class Product {                                  /* tworzymy klasę Product */
+    constructor() {
+      const thisProduct = this;
+
+      console.log('new Product: ', thisProduct);
+    }
+  }
+
+  const app = {                                    /* deklaracja obiektu app */
+    initMenu: function(){                          /* dodajemy deklarację metody app.initMenu */
       const thisApp = this;
+      console.log('thisApp.data: ', thisApp.data);
+
+      for (let productData in thisApp.data.products){
+        new Product(productData, thisApp.data.products[productData]);
+      }
+
+      // const testProduct = new Product();           /* tworzymy instancję Product */
+      // console.log('testProduct', testProduct);
+    },
+
+    initData: function(){
+      const thisApp = this;
+
+      thisApp.data = dataSource;                    /* thisApp.data to referencja do tych samych danych, do których kieruje OBIEKT dataSource */
+    },
+
+    init: function(){
+      const thisApp = this;                         /* uruchamiamy metodę init na obiekcie app (app.init), dlatego this wskazuje na app */
       console.log('*** App starting ***');
       console.log('thisApp:', thisApp);
       console.log('classNames:', classNames);
       console.log('settings:', settings);
       console.log('templates:', templates);
+
+      thisApp.initData();
+      thisApp.initMenu();
     },
   };
 
