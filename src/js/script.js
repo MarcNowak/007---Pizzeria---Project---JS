@@ -92,18 +92,30 @@
       const thisProduct = this;
 
       /* find the clickable trigger (the element that should react to clicking) */
-      const clickableTrigger = '???';
+      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
 
       /* START: add event listener to clickable trigger on event click */
       clickableTrigger.addEventListener('click', function (event) {
-        
+        // console.log('clickableTrigger: ', clickableTrigger);
+
         /* prevent default action for event */
+        event.preventDefault();
 
         /* find active product (product that has active class) */
+        const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
+        console.log('active products: ', activeProducts);
 
         /* if there is active product and it's not thisProduct.element, remove class active from it */
+        for (let activeProduct of activeProducts) {
+          if (activeProduct !== null && activeProduct !== thisProduct.element) {
+            activeProduct.classList.remove('active');
+            console.log('zdjęta klasa active: ', activeProduct);
+          }
+        }
 
         /* toggle active class on thisProduct.element */
+        thisProduct.element.classList.toggle('active');
+        console.log('toggle class: ', thisProduct.element);
 
       });
     }
