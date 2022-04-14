@@ -118,4 +118,9 @@
   };
 
   app.init();
+
+  // 01 - app.init
+  // 02 - app.initData
+  // 03 - app.initMenu
+  // 04 - renderInMenu dla każdej utworzonej instancji
 }
