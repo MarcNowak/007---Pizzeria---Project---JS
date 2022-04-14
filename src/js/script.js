@@ -107,10 +107,13 @@
 
         /* if there is active product and it's not thisProduct.element, remove class active from it */
         for (let activeProduct of activeProducts) {
-          if (activeProduct !== null && activeProduct !== thisProduct.element) {
-            activeProduct.classList.remove('active');
-            console.log('zdjęta klasa active: ', activeProduct);
-          }
+          (activeProduct !== null && activeProduct !== thisProduct.element) ? activeProduct.classList.remove('active') : thisProduct.element;
+
+          // if (activeProduct !== null && activeProduct !== thisProduct.element) {
+          //   activeProduct.classList.remove('active');
+          
+          console.log('zdjęta klasa active: ', activeProduct);
+          // }
         }
 
         /* toggle active class on thisProduct.element */
