@@ -59,7 +59,32 @@
       thisProduct.id = id;                         /* zapisujemy wartości argumentów do właściwości instancji*/
       thisProduct.data = data;                     /* używamy 'this / thisProduct', który jest odnośnikiem do obiektu <new Product>*/
 
+      thisProduct.renderInMenu();                  /* konstruktor uruchomi tę funkcję od razu po utworzeniu instancji */
+
       console.log('new Product: ', thisProduct);
+    }
+
+    renderInMenu(){                                /* tworzymy metodę renderInMenu */
+      const thisProduct = this;
+
+      // generate HTML based on template
+      const generatedHTML = templates.menuProduct(thisProduct.data);
+      /* wywołujemy metodę templates.menuProduct [jest zapisana nad klasą Product] i przekazujemy jej dane produktu */
+      // console.log('generated HTML: ', generatedHTML); - działa
+
+      // create element using utils.createElementFromHTML (tworzenie elementu DOM)
+      thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+      /* przyjmuje jako argument kod HTML (tekst) i zwraca element DOM na nim oparty*/
+      /* element DOM jest zapisany jako właściwość instancji */
+      /* mamy do niego dostęp również w innych metodach instancji, nie tylko w renderInMenu */
+
+      // find menu container
+      const menuContainer = document.querySelector(select.containerOf.menu);
+      /* obiekt 'select' + odpowiednie obiekty-dzieci */
+
+      // add element to menu
+      menuContainer.appendChild(thisProduct.element);
+      /* za pomocą metody appendChild dodajemy stworzony element do menu */
     }
   }
 
