@@ -60,11 +60,12 @@
       thisProduct.data = data;                     /* używamy 'this / thisProduct', który jest odnośnikiem do obiektu <new Product>*/
 
       thisProduct.renderInMenu();                  /* konstruktor uruchomi tę funkcję od razu po utworzeniu instancji */
+      thisProduct.initAccordion();
 
       console.log('new Product: ', thisProduct);
     }
 
-    renderInMenu(){                                /* tworzymy metodę renderInMenu */
+    renderInMenu() {                                /* tworzymy metodę renderInMenu */
       const thisProduct = this;
 
       // generate HTML based on template
@@ -85,6 +86,26 @@
       // add element to menu
       menuContainer.appendChild(thisProduct.element);
       /* za pomocą metody appendChild dodajemy stworzony element do menu */
+    }
+
+    initAccordion() {                              /* tworzymy metodę initAccordion */
+      const thisProduct = this;
+
+      /* find the clickable trigger (the element that should react to clicking) */
+      const clickableTrigger = '???';
+
+      /* START: add event listener to clickable trigger on event click */
+      clickableTrigger.addEventListener('click', function (event) {
+        
+        /* prevent default action for event */
+
+        /* find active product (product that has active class) */
+
+        /* if there is active product and it's not thisProduct.element, remove class active from it */
+
+        /* toggle active class on thisProduct.element */
+
+      });
     }
   }
 
