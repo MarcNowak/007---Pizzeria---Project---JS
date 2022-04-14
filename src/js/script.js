@@ -53,33 +53,33 @@
   };
 
   class Product {                                  /* tworzymy klasę Product */
-    constructor() {
-      const thisProduct = this;
+    constructor(id, data) {                        /* z app.initMenu: id = productData, data = thisApp.data.products[productData]*/
+      const thisProduct = this;                    /*  thisProduct.id- to samo co w przykładzie z Employee: thisEmoployee.name*/
+
+      thisProduct.id = id;                         /* zapisujemy wartości argumentów do właściwości instancji*/
+      thisProduct.data = data;                     /* używamy 'this / thisProduct', który jest odnośnikiem do obiektu <new Product>*/
 
       console.log('new Product: ', thisProduct);
     }
   }
 
   const app = {                                    /* deklaracja obiektu app */
-    initMenu: function(){                          /* dodajemy deklarację metody app.initMenu */
+    initMenu: function () {                        /* dodajemy deklarację metody app.initMenu */
       const thisApp = this;
       console.log('thisApp.data: ', thisApp.data);
 
-      for (let productData in thisApp.data.products){
-        new Product(productData, thisApp.data.products[productData]);
+      for (let productData in thisApp.data.products) { /* tworzymy instancję dla każdego produktu przez użycie pętli */
+        new Product(productData, thisApp.data.products[productData]); /*  przekazane do konstruktora jako "id" oraz "data"*/
       }
-
-      // const testProduct = new Product();           /* tworzymy instancję Product */
-      // console.log('testProduct', testProduct);
     },
 
-    initData: function(){
+    initData: function () {
       const thisApp = this;
 
       thisApp.data = dataSource;                    /* thisApp.data to referencja do tych samych danych, do których kieruje OBIEKT dataSource */
     },
 
-    init: function(){
+    init: function () {
       const thisApp = this;                         /* uruchamiamy metodę init na obiekcie app (app.init), dlatego this wskazuje na app */
       console.log('*** App starting ***');
       console.log('thisApp:', thisApp);
