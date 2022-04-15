@@ -102,19 +102,14 @@
         event.preventDefault();
 
         /* find active product (product that has active class) */
-        const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
-        console.log('active products: ', activeProducts);
+        const activeProduct = document.querySelector(select.all.menuProductsActive);
+        console.log('active products: ', activeProduct);
 
-        /* if there is active product and it's not thisProduct.element, remove class active from it */
-        for (let activeProduct of activeProducts) {
-          (activeProduct !== null && activeProduct !== thisProduct.element) ? activeProduct.classList.remove('active') : thisProduct.element;
+        if (activeProduct !== null && activeProduct !== thisProduct.element) activeProduct.classList.remove('active');
+        // (activeProduct !== null && activeProduct !== thisProduct.element) ? activeProduct.classList.remove('active') : thisProduct.element;
+        // short if nie jest potrzebny w tej sytuacji. Sama konstrukcja short ifa jest zbudowana poprawnie
 
-          // if (activeProduct !== null && activeProduct !== thisProduct.element) {
-          //   activeProduct.classList.remove('active');
-          
-          console.log('zdjęta klasa active: ', activeProduct);
-          // }
-        }
+        console.log('zdjęta klasa active: ', activeProduct);
 
         /* toggle active class on thisProduct.element */
         thisProduct.element.classList.toggle('active');
@@ -159,4 +154,5 @@
   // 02 - app.initData
   // 03 - app.initMenu
   // 04 - renderInMenu dla każdej utworzonej instancji
+  // 05 - app.initAccordion
 }
