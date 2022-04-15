@@ -60,6 +60,7 @@
       thisProduct.data = data;                     /* używamy 'this / thisProduct', który jest odnośnikiem do obiektu <new Product>*/
 
       thisProduct.renderInMenu();                  /* konstruktor uruchomi tę funkcję od razu po utworzeniu instancji */
+      thisProduct.getElements();
       thisProduct.initAccordion();
 
       console.log('new Product: ', thisProduct);
@@ -88,15 +89,29 @@
       /* za pomocą metody appendChild dodajemy stworzony element do menu */
     }
 
+    getElements() {                                 /* tworzymy metodę getElements*/
+      const thisProduct = this;                     /* która odnajdzie elementy w kontenerze produktu */
+
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+
+    }
+
     initAccordion() {                              /* tworzymy metodę initAccordion */
       const thisProduct = this;
 
       /* find the clickable trigger (the element that should react to clicking) */
-      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      // const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      // po dodaniu referencji accordionTrigger w getElements stała clickableTrigger nie jest już potrzebna
 
       /* START: add event listener to clickable trigger on event click */
-      clickableTrigger.addEventListener('click', function (event) {
-        // console.log('clickableTrigger: ', clickableTrigger);
+      thisProduct.accordionTrigger.addEventListener('click', function (event) {
+        // stałą clickableTrigger zamieniamy na referencję
+
+        // console.log('accordionTrigger: ', thisProduct.accordionTrigger);
 
         /* prevent default action for event */
         event.preventDefault();
