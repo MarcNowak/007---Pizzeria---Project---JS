@@ -92,7 +92,7 @@ dataSource.products = {
           greenPeppers: {
             label: 'Green peppers', 
             price: 2, 
-            default: true
+            // default: true
           },
           mushrooms: {
             label: 'Mushrooms', 
@@ -102,7 +102,7 @@ dataSource.products = {
           basil: {
             label: 'Fresh basil', 
             price: 2, 
-            default: true
+            // default: true
           },
           salami: {
             label: 'Salami', 
