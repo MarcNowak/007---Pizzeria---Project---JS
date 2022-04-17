@@ -62,6 +62,9 @@
       thisProduct.renderInMenu();                  /* konstruktor uruchomi tę funkcję od razu po utworzeniu instancji */
       thisProduct.getElements();
       thisProduct.initAccordion();
+      thisProduct.initOrderForm();
+      thisProduct.processOrder();
+
 
       console.log('new Product: ', thisProduct);
     }
@@ -97,7 +100,6 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-
     }
 
     initAccordion() {                              /* tworzymy metodę initAccordion */
@@ -110,8 +112,6 @@
       /* START: add event listener to clickable trigger on event click */
       thisProduct.accordionTrigger.addEventListener('click', function (event) {
         // stałą clickableTrigger zamieniamy na referencję
-
-        // console.log('accordionTrigger: ', thisProduct.accordionTrigger);
 
         /* prevent default action for event */
         event.preventDefault();
@@ -131,6 +131,58 @@
         console.log('toggle class: ', thisProduct.element);
 
       });
+    }
+
+    initOrderForm() {                              /* tworzymy metodę initOrderForm */
+      const thisProduct = this;                    /* jest ona uruchamiana tylko raz dla każdego produktu */
+      console.log('initOrderForm:');
+
+      thisProduct.form.addEventListener('submit', function(event){    /* dodaje event listener do formularza */
+        event.preventDefault();         /* blokujemy domyślną akcję: wysłanie formularza, reload strony, zmianę URL */
+        thisProduct.processOrder();     /* funkcja callback: metoda processOrder bez argumentów*/
+      });
+
+      for(let input of thisProduct.formInputs){    /* dodaje event listener do kontrolek formularza */
+        input.addEventListener('change', function(){
+          thisProduct.processOrder();   /* funkcja callback: metoda processOrder bez argumentów*/
+        });
+      }
+
+      thisProduct.cartButton.addEventListener('click', function(event){     /* dodaje event listener do guzika dodania do koszyka */
+        event.preventDefault();         /* blokujemy domyślną akcję: wysłanie formularza, reload strony, zmianę URL */
+        thisProduct.processOrder();     /* funkcja callback: metoda processOrder bez argumentów*/
+      });
+    }
+
+    processOrder() {                               /* tworzymy metodę processOrder*/
+      const thisProduct = this;
+      
+      // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      /* konwertuje otrzymany obiekt formularza na zwykły obiekt JS*/
+
+      console.log('formdata: ', formData);
+
+      // set price to default price
+      let price = thisProduct.data.price;
+      /* ustawiamy wartość 'price" danego produktu jako cenę domyślną */
+
+      // for every category (param)...
+      for (let paramId in thisProduct.data.params) {
+        // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+        const param = thisProduct.data.params[paramId];
+        console.log(paramId, param);
+
+        // for every option in this category
+        for (let optionId in param.options){
+          // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
+          const option = param.options[optionId];
+          console.log(optionId, option);
+        }
+      }
+
+      // update calculated price in the HTML
+      thisProduct.priceElem.innerHTML = price;
     }
   }
 
