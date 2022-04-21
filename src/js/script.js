@@ -63,6 +63,7 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
+      thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
 
@@ -103,6 +104,9 @@
 
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       // referencja do pojedynczego elementu o selektorze zapisanym w select.menuProduct.imageWrapper
+
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      // referencja do diva z inputem i buttonami "+" i "-".
     }
 
     initAccordion() {                              /* tworzymy metodę initAccordion */
@@ -188,7 +192,7 @@
           // if (formData[paramId] && formData[paramId].includes(optionId)) {
           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
 
-          if (optionSelected){
+          if (optionSelected) {
 
             // check if the option is not default
             if (!option.default == true) {
@@ -208,8 +212,8 @@
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
           // szukamy obrazka odpowiadającego konkretnej parze kategoria-opcja
 
-          if(optionImage) {
-            if(optionSelected) {
+          if (optionImage) {
+            if (optionSelected) {
               optionImage.classList.add(classNames.menuProduct.imageVisible);
             } else {
               optionImage.classList.remove(classNames.menuProduct.imageVisible);
@@ -220,6 +224,21 @@
 
       // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
+    }
+
+    initAmountWidget() {
+      const thisProduct = this;
+
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+    }
+  }
+
+  class AmountWidget {
+    constructor(element) {
+      const thisWidget = this;
+
+      console.log('Amount Widget: ', thisWidget);
+      console.log('constructor arguments: ', element);
     }
   }
 
@@ -241,11 +260,11 @@
 
     init: function () {
       const thisApp = this;                         /* uruchamiamy metodę init na obiekcie app (app.init), dlatego this wskazuje na app */
-      console.log('*** App starting ***');
-      console.log('thisApp:', thisApp);
-      console.log('classNames:', classNames);
-      console.log('settings:', settings);
-      console.log('templates:', templates);
+      // console.log('*** App starting ***');
+      // console.log('thisApp:', thisApp);
+      // console.log('classNames:', classNames);
+      // console.log('settings:', settings);
+      // console.log('templates:', templates);
 
       thisApp.initData();
       thisApp.initMenu();
