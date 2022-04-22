@@ -161,7 +161,7 @@
       });
     }
 
-    processOrder() {                               /* tworzymy metodę processOrder*/
+    processOrder() {                               /* tworzymy metodę processOrder */
       const thisProduct = this;
 
       // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
@@ -226,7 +226,7 @@
       thisProduct.priceElem.innerHTML = price;
     }
 
-    initAmountWidget() {
+    initAmountWidget() {                           /* tworzymy metodę initAmountWidget */
       const thisProduct = this;
 
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
@@ -237,8 +237,19 @@
     constructor(element) {
       const thisWidget = this;
 
+      thisWidget.getElements(element);
+
       console.log('Amount Widget: ', thisWidget);
       console.log('constructor arguments: ', element);
+    }
+
+    getElements(element) {
+      const thisWidget = this;
+
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
     }
   }
 
