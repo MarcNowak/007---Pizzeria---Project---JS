@@ -238,6 +238,7 @@
       const thisWidget = this;
 
       thisWidget.getElements(element);
+      thisWidget.setValue(thisWidget.input.value);
 
       console.log('Amount Widget: ', thisWidget);
       console.log('constructor arguments: ', element);
@@ -250,6 +251,23 @@
       thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
       thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    }
+
+    setValue(value){
+      const thisWidget = this;
+
+      const newValue = parseInt(value);
+      /* konwertujemy ze stringa na liczbę */
+
+      /* TODO: add validation */
+      if (thisWidget.value !== newValue && !isNaN(newValue)){
+        thisWidget.value = newValue;
+      }
+
+      thisWidget.value = value;
+      /* zapisuje we właściwości thisWidget.value wartość przekazanego argumentu */
+
+      thisWidget.input.value = thisWidget.value;
     }
   }
 
