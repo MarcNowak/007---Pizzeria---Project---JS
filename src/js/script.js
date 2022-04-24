@@ -40,7 +40,7 @@
     },
   };
 
-  const settings = {
+  const settings = { // eslint-disable-line no-unused-vars
     amountWidget: {
       defaultValue: 1,
       defaultMin: 1,
@@ -239,12 +239,13 @@
 
       thisWidget.getElements(element);
       thisWidget.setValue(thisWidget.input.value);
+      thisWidget.initActions();
 
       console.log('Amount Widget: ', thisWidget);
       console.log('constructor arguments: ', element);
     }
 
-    getElements(element) {
+    getElements(element) {                         /* tworzymy nową metodę getElements */
       const thisWidget = this;
 
       thisWidget.element = element;
@@ -253,14 +254,19 @@
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
     }
 
-    setValue(value){
+    setValue(value) {
       const thisWidget = this;
 
       const newValue = parseInt(value);
       /* konwertujemy ze stringa na liczbę */
 
       /* TODO: add validation */
-      if (thisWidget.value !== newValue && !isNaN(newValue)){
+      if (
+        thisWidget.value !== newValue
+        && !isNaN(newValue)
+        && newValue <= settings.amountWidget.defaultMin
+        && newValue >= settings.amountWidget.defaultMax
+      ) {
         thisWidget.value = newValue;
       }
 
@@ -268,6 +274,25 @@
       /* zapisuje we właściwości thisWidget.value wartość przekazanego argumentu */
 
       thisWidget.input.value = thisWidget.value;
+    }
+
+    initActions() {
+      const thisWidget = this;
+
+      thisWidget.input.addEventListener('change', function () {
+        thisWidget.setValue(thisWidget.value);
+
+      });
+
+      thisWidget.linkDecrease.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value - 1);
+      });
+
+      thisWidget.linkIncrease.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value + 1);
+      });
     }
   }
 
