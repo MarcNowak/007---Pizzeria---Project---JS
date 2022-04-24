@@ -222,6 +222,9 @@
         }
       }
 
+      // multiply price by amount
+      price *= thisProduct.amountWidget.value;
+
       // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
     }
@@ -230,6 +233,10 @@
       const thisProduct = this;
 
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+
+      thisProduct.amountWidgetElem.addEventListener('updated', function () {
+        thisProduct.processOrder();
+      });
     }
   }
 
@@ -252,9 +259,10 @@
       thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
       thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+      thisWidget.value = settings.amountWidget.defaultValue;
     }
 
-    setValue(value) {
+    setValue(value) {                              /* tworzymy metodę setValue */
       const thisWidget = this;
 
       const newValue = parseInt(value);
@@ -269,14 +277,17 @@
       ) {
         thisWidget.value = newValue;
       }
-
-      thisWidget.value = value;
+      
+      // thisWidget.value = value;
       /* zapisuje we właściwości thisWidget.value wartość przekazanego argumentu */
+
+      thisWidget.announce();
+      /* wywołujemy metodę announce*/
 
       thisWidget.input.value = thisWidget.value;
     }
 
-    initActions() {
+    initActions() {                                /* tworzymy metodę initActions */
       const thisWidget = this;
 
       thisWidget.input.addEventListener('change', function () {
@@ -293,6 +304,13 @@
         event.preventDefault();
         thisWidget.setValue(++thisWidget.value);
       });
+    }
+
+    announce () {                                  /* tworzymy mnetodę announce */
+      const thisWidget = this;
+
+      const event = new Event ('updated');
+      thisWidget.element.dispatchEvent(event);
     }
   }
 
