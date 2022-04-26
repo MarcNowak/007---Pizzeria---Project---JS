@@ -130,34 +130,34 @@
     getElements() {                                 /* tworzymy metodę getElements*/
       const thisProduct = this;                     /* która odnajdzie elementy w kontenerze produktu */
 
-      thisProduct.dom = {};
+      // thisProduct.dom = {};
 
-      thisProduct.dom.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-      thisProduct.dom.form = thisProduct.element.querySelector(select.menuProduct.form);
-      thisProduct.dom.formInputs = thisProduct.dom.form.querySelectorAll(select.all.formInputs);
-      thisProduct.dom.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
-      thisProduct.dom.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      // thisProduct.dom.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      // thisProduct.dom.form = thisProduct.element.querySelector(select.menuProduct.form);
+      // thisProduct.dom.formInputs = thisProduct.dom.form.querySelectorAll(select.all.formInputs);
+      // thisProduct.dom.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      // thisProduct.dom.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
 
-      thisProduct.dom.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
-      // referencja do pojedynczego elementu o selektorze zapisanym w select.menuProduct.imageWrapper
+      // thisProduct.dom.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      // // referencja do pojedynczego elementu o selektorze zapisanym w select.menuProduct.imageWrapper
 
-      thisProduct.dom.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
-      // referencja do diva z inputem i buttonami "+" i "-".
+      // thisProduct.dom.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      // // referencja do diva z inputem i buttonami "+" i "-".
 
 
  
 
-      // thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-      // thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
-      // thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
-      // thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
-      // thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
 
-      // thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
-      // // referencja do pojedynczego elementu o selektorze zapisanym w select.menuProduct.imageWrapper
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      // referencja do pojedynczego elementu o selektorze zapisanym w select.menuProduct.imageWrapper
 
-      // thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
-      // // referencja do diva z inputem i buttonami "+" i "-".
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      // referencja do diva z inputem i buttonami "+" i "-".
       
     }
 
@@ -373,6 +373,7 @@
       thisCart.products = [];                     /* tablica przechowuje produkty dodane do koszyka */
 
       thisCart.getElements(element);
+      thisCart.initActions();
 
       console.log('new Cart: ', thisCart);
     }
@@ -383,6 +384,21 @@
       thisCart.dom = {};
 
       thisCart.dom.wrapper = element;
+      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+    }
+
+    initActions() {
+      const thisCart = this;
+
+      thisCart.dom.toggleTrigger.addEventListener('click', function (event) {
+        // dodajemy listener eventu 'click' na elemencie thisCart.dom.toggleTrigger
+
+        event.preventDefault();
+        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+        // handler toggluje klasę zapisaną w
+        // classNames.cart.wrapperActive na elemencie thisCart.dom.wrapper
+      });
+
     }
   }
 
@@ -402,23 +418,26 @@
       thisApp.data = dataSource;                    /* thisApp.data to referencja do tych samych danych, do których kieruje OBIEKT dataSource */
     },
 
-    initCart: function () {
+    initCart: function () {                         /* dodajemy deklarację metody iniCart */
       const thisApp = this;
 
-      const cartElem = document.querySelector(select.containerOf.cart);
-      thisApp.cart = new Cart(cartElem);
+      const cartElem = document.querySelector(select.containerOf.cart); 
+      /* przekazujemy refencję do diva, w którym ma być obecny koszyk */
+      
+      thisApp.cart = new Cart(cartElem);            /* inicjuje instancję koszyka */
     },
 
     init: function () {
       const thisApp = this;                         /* uruchamiamy metodę init na obiekcie app (app.init), dlatego this wskazuje na app */
-      // console.log('*** App starting ***');
-      // console.log('thisApp:', thisApp);
-      // console.log('classNames:', classNames);
-      // console.log('settings:', settings);
-      // console.log('templates:', templates);
+      console.log('*** App starting ***');
+      console.log('thisApp:', thisApp);
+      console.log('classNames:', classNames);
+      console.log('settings:', settings);
+      console.log('templates:', templates);
 
       thisApp.initData();
       thisApp.initMenu();
+      thisApp.initCart();
     },
   };
 
