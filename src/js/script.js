@@ -330,7 +330,7 @@
           label: param.label,       /*    label: Toppings, */
           options: {}               /*    options: {} */
         };
-        
+
         // for every option in this category
         for (let optionId in param.options) {
 
@@ -447,6 +447,9 @@
 
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
+      // 9.4 TASK
     }
 
     initActions() {                               /* tworzymy metodę initActions*/
@@ -464,7 +467,19 @@
     }
 
     add(menuProduct) {                            /* tworzymy metodę add z argumentem menuProduct */
-      // const thisCart = this;
+      // 9.4 TASK  
+      const thisCart = this;
+
+      // generate HTML based on template
+      const generatedHTML = templates.cartProduct(menuProduct);
+
+      // create element using utils.createElementFromHTML (tworzenie elementu DOM)
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      /* przyjmuje jako argument kod HTML (tekst) i zwraca element DOM na nim oparty*/
+
+      // add element to menu
+      thisCart.dom.productList.appendChild(generatedDOM);
+      /* za pomocą metody appendChild dodajemy stworzony element do menu */
 
       console.log('adding product / productSummary:', menuProduct);
     }
