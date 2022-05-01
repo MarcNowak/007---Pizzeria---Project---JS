@@ -302,7 +302,6 @@
         params: thisProduct.prepareCartProductParams(),
       };
 
-
       return productSummary;
 
     }
@@ -437,7 +436,7 @@
       thisCart.getElements(element);
       thisCart.initActions();
 
-      console.log('new Cart: ', thisCart);
+      // console.log('new Cart: ', thisCart);
     }
 
     getElements(element) {                         /* tworzymy metodę getElements*/
@@ -483,13 +482,13 @@
 
       console.log('adding product / productSummary:', menuProduct);
 
-      thisCart.products.push(menuProduct);
-      console.log('thisCart.products: ', thisCart.products);
+      thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
+      // console.log('thisCart.products: ', thisCart.products);
     }
   }
 
   class CartProduct {                            /* tworzymy klasę ClassProduct - odpowiada za produkty w koszyku */
-    constructor (menuProduct, element){
+    constructor(menuProduct, element) {
       const thisCartProduct = this;
 
       thisCartProduct.id = menuProduct.id;
@@ -500,8 +499,9 @@
       thisCartProduct.amount = menuProduct.amount;
 
       thisCartProduct.getElements(element);
+      thisCartProduct.initAmountWidget();
 
-      console.log('thisCartProduct: ', thisCartProduct);
+      // console.log('thisCartProduct: ', thisCartProduct);
 
     }
 
@@ -509,13 +509,31 @@
       const thisCartProduct = this;
 
       thisCartProduct.dom = {};
+
       thisCartProduct.dom.wrapper = element;
 
       thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
       thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
       thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
       thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+  
     }
+
+    initAmountWidget() {
+      const thisCartProduct = this;
+
+      thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
+
+      thisCartProduct.dom.amountWidget.addEventListener('updated', function() {
+        thisCartProduct.amount = thisCartProduct.amountWidget.value;
+        thisCartProduct.price = thisCartProduct.amount * thisCartProduct.priceSingle;
+        thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
+        
+      });
+    }
+
+    
+    
 
   }
 
@@ -546,11 +564,11 @@
 
     init: function () {
       const thisApp = this;                         /* uruchamiamy metodę init na obiekcie app (app.init), dlatego this wskazuje na app */
-      console.log('*** App starting ***');
-      console.log('thisApp:', thisApp);
-      console.log('classNames:', classNames);
-      console.log('settings:', settings);
-      console.log('templates:', templates);
+      // console.log('*** App starting ***');
+      // console.log('thisApp:', thisApp);
+      // console.log('classNames:', classNames);
+      // console.log('settings:', settings);
+      // console.log('templates:', templates);
 
       thisApp.initData();
       thisApp.initMenu();
