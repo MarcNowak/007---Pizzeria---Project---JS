@@ -422,7 +422,9 @@
     announce() {                                  /* tworzymy mnetodę announce */
       const thisWidget = this;
 
-      const event = new Event('updated');
+      const event = new CustomEvent('updated', {
+        bubbles: true
+      });
       thisWidget.element.dispatchEvent(event);
     }
   }
@@ -448,7 +450,20 @@
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
 
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
-      // 9.4 TASK
+
+      
+      thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelector(select.cart.deliveryFee);
+      // referencja do elementu pokazującego koszt przesyłki
+
+      thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
+      // referencja do elementu pokazującego cenę końcową, ale bez kosztów przesyłki
+
+      thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
+      // referencja do WSZYSTKICH lementów pokazujących cenę końcową
+
+      thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
+      // referencja do elementu pokazującego liczbę sztuk
+      
     }
 
     initActions() {                               /* tworzymy metodę initActions*/
@@ -461,6 +476,10 @@
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
         // handler toggluje klasę zapisaną w
         // classNames.cart.wrapperActive na elemencie thisCart.dom.wrapper
+      });
+
+      thisCart.dom.productList.addEventListener('updated', function(){
+        thisCart.update();
       });
 
     }
@@ -484,6 +503,51 @@
 
       thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
       // console.log('thisCart.products: ', thisCart.products);
+
+      thisCart.update();
+    }
+
+    update() {                                    /* tworzymy metodę update */
+      const thisCart = this;
+      // deklarujemy stałą thisCart
+
+      const deliveryFee = settings.cart.defaultDeliveryFee;
+      // tworzymy stałą z informacją o cenie dostawy
+
+      let totalNumber = 0;
+      // odpowiada całościwoej liczbie sztuk
+
+      let subtotalPrice = 0;
+      // zsumowana cena za wszystko- ale bez ceny dostawt
+
+      for (let product of thisCart.products) {
+        // pętlą przechodzimy po thisCart.products
+
+        totalNumber = totalNumber + product.amount;
+        // zwiększamy liczbę produktów o wartość zapisaną w product.amount
+
+        subtotalPrice = subtotalPrice + product.price;
+        // zwiększamy cenę - wartość danego produktu
+      }
+
+      if (subtotalPrice > 0) {
+        // jeśli cena za wszystko > 0 
+
+        thisCart.totalPrice = subtotalPrice + deliveryFee;
+        // do ceny doliczamy koszt dostawy
+
+      } else {
+        thisCart.totalPrice = 0;
+        // w przeciwnym wypadku cena końcowa = 0
+      }
+
+      thisCart.dom.deliveryFee.innerHTML = deliveryFee;
+      thisCart.dom.totalNumber.innerHTML = totalNumber;
+      thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
+      for (let total of thisCart.dom.totalPrice) {
+        total.innerHTML = thisCart.totalPrice;
+      }
+
     }
   }
 
@@ -531,9 +595,6 @@
         
       });
     }
-
-    
-    
 
   }
 
