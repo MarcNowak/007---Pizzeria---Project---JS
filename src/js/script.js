@@ -515,8 +515,8 @@
       const thisCart = this;
       // deklarujemy stałą thisCart
 
-      const deliveryFee = settings.cart.defaultDeliveryFee;
-      // tworzymy stałą z informacją o cenie dostawy
+      let deliveryFee;
+      // tworzymy stałą z  o cenie dostawy
 
       let totalNumber = 0;
       // odpowiada całościwoej liczbie sztuk
@@ -527,24 +527,18 @@
       for (let product of thisCart.products) {
         // pętlą przechodzimy po thisCart.products
 
-        totalNumber = totalNumber + product.amount;
+        totalNumber += product.amount;
         // zwiększamy liczbę produktów o wartość zapisaną w product.amount
 
-        subtotalPrice = subtotalPrice + product.price;
+        subtotalPrice += product.price;
         // zwiększamy cenę - wartość danego produktu
       }
 
-      if (subtotalPrice > 0) {
-        // jeśli cena za wszystko > 0 
+      /* shorthand if */
+      subtotalPrice > 0 ? deliveryFee=settings.cart.defaultDeliveryFee : deliveryFee = 0;
+      /* condition      ? doThisIfTrue                                 : doThisIfFalse*/
 
-        thisCart.totalPrice = subtotalPrice + deliveryFee;
-        // do ceny doliczamy koszt dostawy
-
-      } else {
-        thisCart.totalPrice = 0;
-        // w przeciwnym wypadku cena końcowa = 0
-      }
-
+      thisCart.totalPrice = subtotalPrice + deliveryFee;
       thisCart.dom.deliveryFee.innerHTML = deliveryFee;
       thisCart.dom.totalNumber.innerHTML = totalNumber;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
