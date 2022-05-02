@@ -119,7 +119,10 @@ dataSource.products = {
             price: 0, 
             default: true
           },
-          thin: {label: 'thin', price: 2},
+          thin: {
+            label: 'thin',
+            price: 2
+          },
           thick: {
             label: 'thick', 
             price: 2
