@@ -451,7 +451,7 @@
 
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
 
-      
+
       thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelector(select.cart.deliveryFee);
       // referencja do elementu pokazującego koszt przesyłki
 
@@ -480,6 +480,10 @@
 
       thisCart.dom.productList.addEventListener('updated', function(){
         thisCart.update();
+      });
+
+      thisCart.dom.productList.addEventListener('remove', function(event){
+        thisCart.remove(event.detail.cartProduct);
       });
 
     }
@@ -549,6 +553,19 @@
       }
 
     }
+
+    remove (element) {
+      const thisCart = this;
+      element.dom.wrapper.remove();
+      // usuwamy element / produkt z HTML
+
+      const indexOfProduct = thisCart.products.indexOf(element);
+      thisCart.products.splice(indexOfProduct, 1);
+      // usuwamy danym produkt z tablicy
+
+      thisCart.update();
+      // wywołujemy metodę update do przeliczenia sum po usunięciu produktu
+    }
   }
 
   class CartProduct {                            /* tworzymy klasę ClassProduct - odpowiada za produkty w koszyku */
@@ -564,6 +581,7 @@
 
       thisCartProduct.getElements(element);
       thisCartProduct.initAmountWidget();
+      thisCartProduct.initActions();
 
       // console.log('thisCartProduct: ', thisCartProduct);
 
@@ -594,6 +612,33 @@
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
         
       });
+    }
+
+    remove () {
+      const thisCartProduct = this;
+      const event = new CustomEvent('remove', {
+        bubbles: true,
+        detail: {
+          cartProduct: thisCartProduct,
+        }
+      });
+
+      thisCartProduct.dom.wrapper.dispatchEvent(event);
+     
+    }
+
+    initActions () {
+      const thisCartProduct = this;
+
+      thisCartProduct.dom.edit.addEventListener('click', function(event) {
+        event.preventDefault();
+      });
+
+      thisCartProduct.dom.remove.addEventListener('click', function(event) {
+        event.preventDefault();
+        thisCartProduct.remove();
+      });
+
     }
 
   }
