@@ -77,6 +77,12 @@
       defaultDeliveryFee: 20,
     },
     // CODE ADDED END
+
+    db: {
+      url: '//localhost:3131',
+      products: 'products',
+      orders: 'orders',
+    },
   };
 
   const templates = {
@@ -262,11 +268,10 @@
       thisProduct.priceSingle = price;
       // każde uruchomienie processOrder zaktualizuje thisProduct.priceSingle
       // metoda uruchamia się przy każdej zmianie opcji
-      // dlatego priceSibgle zawsze zwraca aktualną cenę jednostkową
+      // dlatego priceSingle zawsze zwraca aktualną cenę jednostkową
 
       // multiply price by amount
       price *= thisProduct.amountWidget.value;
-
 
       // update calculated price in the HTML
       thisProduct.dom.priceElem.innerHTML = price;
@@ -643,14 +648,36 @@
       // console.log('thisApp.data: ', thisApp.data);
 
       for (let productData in thisApp.data.products) { /* tworzymy instancję dla każdego produktu przez użycie pętli */
-        new Product(productData, thisApp.data.products[productData]); /*  przekazane do konstruktora jako "id" oraz "data"*/
+        new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]); /*  przekazane do konstruktora jako "id" oraz "data"*/
       }
     },
 
     initData: function () {
       const thisApp = this;
 
-      thisApp.data = dataSource;                    /* thisApp.data to referencja do tych samych danych, do których kieruje OBIEKT dataSource */
+      // thisApp.data = dataSource;                    /* thisApp.data to referencja do tych samych danych, do których kieruje OBIEKT dataSource */
+      thisApp.data = {};
+
+      // pobieranie danych o produktach przez API
+      const url = settings.db.url + '/' + settings.db.products;
+      //   http: //localhost:3131    /    products
+
+      fetch(url)
+        .then(function (rawResponse) {
+          return rawResponse.json();
+        })
+
+        .then(function (parsedResponse) {
+          console.log('parsed response: ', parsedResponse);
+
+          /* save parsedResponse as thisApp.data.products */
+          thisApp.data.products = parsedResponse;
+
+          /* execute initMenu method */
+          thisApp.initMenu();
+        });
+
+      console.log('thisApp.data: ', JSON.stringify(thisApp.data));
     },
 
     initCart: function () {                         /* dodajemy deklarację metody iniCart */
@@ -671,7 +698,7 @@
       // console.log('templates:', templates);
 
       thisApp.initData();
-      thisApp.initMenu();
+      // thisApp.initMenu(); - zbędne po dodaniu AJAXa
       thisApp.initCart();
     },
   };
