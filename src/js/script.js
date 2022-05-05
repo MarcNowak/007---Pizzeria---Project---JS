@@ -469,6 +469,12 @@
       thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
       // referencja do elementu pokazującego liczbę sztuk
 
+      thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
+      // referencja do elementu formularza <form>
+
+      thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
+      thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
+
     }
 
     initActions() {                               /* tworzymy metodę initActions*/
@@ -489,6 +495,13 @@
 
       thisCart.dom.productList.addEventListener('remove', function (event) {
         thisCart.remove(event.detail.cartProduct);
+      });
+
+      thisCart.dom.form.addEventListener('submit', function (event) {
+
+        event.preventDefault();
+        thisCart.sendOrder();
+
       });
 
     }
@@ -547,6 +560,12 @@
       thisCart.dom.deliveryFee.innerHTML = deliveryFee;
       thisCart.dom.totalNumber.innerHTML = totalNumber;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
+      thisCart.totalNumber = totalNumber;
+      thisCart.subtotalPrice = subtotalPrice;
+      thisCart.deliveryFee = deliveryFee;
+      // zapisanie danej informacji jako właściwość pozwala 
+      // z niej skorzystać w innych metodach, np. w sendOrder()
+
       for (let total of thisCart.dom.totalPrice) {
         total.innerHTML = thisCart.totalPrice;
       }
@@ -564,6 +583,49 @@
 
       thisCart.update();
       // wywołujemy metodę update do przeliczenia sum po usunięciu produktu
+    }
+
+    sendOrder() {
+      const thisCart = this;
+
+      const url = settings.db.url + '/' + settings.db.orders;
+
+      const payload = {
+        address: thisCart.dom.address.value,
+        // wartość elementu input możemy odczytać
+        // za pomocą właściwości 'value'
+
+        phone: thisCart.dom.phone.value,
+        totalPrice: thisCart.totalPrice,
+        subtotalPrice: thisCart.subtotalPrice,
+        totalNumber: thisCart.totalNumber,
+        deliveryFee: thisCart.deliveryFee,
+        products: [],
+      };
+
+      for (let prod of thisCart.products) {
+        payload.products.push(prod.getData());
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      };
+
+      fetch(url, options);
+      // .then(function(response) {
+      //   return response.json();
+      // }).then(function(parsedResponse){
+      //   console.log('PARSED RESPONSE: ', parsedResponse);
+      // });
+      // tylko do sprawdzenia co zwraca funckcja
+      // pod odkomentowaniu usunąć średnik w linii z fetchem
+
+
+      // console.log('Payload: ', payload);
     }
   }
 
@@ -638,6 +700,21 @@
         thisCartProduct.remove();
       });
 
+    }
+
+    getData() {
+      const thisCartProduct = this;
+
+      const productSummary = {
+        amount: thisCartProduct.amount,
+        id: thisCartProduct.id,
+        name: thisCartProduct.name,
+        params: thisCartProduct.params,
+        price: thisCartProduct.price,
+        priceSingle: thisCartProduct.priceSingle,
+      };
+
+      return productSummary;
     }
 
   }
