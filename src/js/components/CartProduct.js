@@ -1,9 +1,9 @@
 import {
   select,
 }
-  from './select.js';
+  from '../settings.js';
 
-import AmountWidget from './AmountWidget';
+import AmountWidget from './AmountWidget.js';
 
 class CartProduct {                            /* tworzymy klasę ClassProduct - odpowiada za produkty w koszyku */
   constructor(menuProduct, element) {

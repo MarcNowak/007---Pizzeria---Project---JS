@@ -3,10 +3,10 @@ import {
   classNames,
   templates
 } 
-  from './settings.js';
+  from '../settings.js';
   
-import utils from './utils.js';
-import AmountWidget from './components/AmountWidget.js';
+import utils from '../utils.js';
+import AmountWidget from './AmountWidget.js';
 
 class Product {                                  /* tworzymy klasę Product */
   constructor(id, data) {                        /* z app.initMenu: id = productData, data = thisApp.data.products[productData]*/

@@ -4,10 +4,10 @@ import {
   templates,
   settings,
 }
-  from './setting.js';
+  from '../settings.js';
 
-import CartProduct from './components/CartProduct.js';
-import utils from '../utils';
+import CartProduct from './CartProduct.js';
+import utils from '../utils.js';
 
 class Cart {                                     /* tworzymy klasę Cart obsługującą koszyk */
   constructor(element) {
