@@ -218,7 +218,7 @@ class Product {                                  /* tworzymy klasę Product */
       detail: {
         // żeby pod kluczem produkt znajdował się produkt
         // który został dodany do koszyka
-        product: thisProduct,
+        product: thisProduct.prepareCartProduct(),
       },
     });
 
