@@ -4,79 +4,70 @@ import {
 }
   from '../settings.js';
 
-class AmountWidget {
+import BaseWidget from './BaseWidget.js';
+
+class AmountWidget extends BaseWidget {
   constructor(element) {
+
+    /* potrzebuje dwóch argumentów:
+       - wrapper, czyli element przekazany konstruktorowi klasy AmountWidget
+       - początkowa wartość widgetu */
+    super(element, settings.amountWidget.defaultValue);
     const thisWidget = this;
 
     thisWidget.getElements(element);
-    thisWidget.setValue(thisWidget.input.value);
+
+
     thisWidget.initActions();
 
     // console.log('Amount Widget: ', thisWidget);
     // console.log('constructor arguments: ', element);
   }
 
-  getElements(element) {                         /* tworzymy nową metodę getElements */
+  getElements() {                         /* tworzymy nową metodę getElements */
     const thisWidget = this;
 
-    thisWidget.element = element;
-    thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
-    thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
-    thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
-    thisWidget.value = settings.amountWidget.defaultValue;
+    thisWidget.dom.input = thisWidget.dom.wrapper.querySelector(select.widgets.amount.input);
+    thisWidget.dom.linkDecrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkDecrease);
+    thisWidget.dom.linkIncrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkIncrease);
+
   }
 
-  setValue(value) {                              /* tworzymy metodę setValue */
+  /* będzie zwracać prawdę lub fałsz w zależności od tego
+  czy wartość którą chcemy ustawić dla tyego widgetu
+  jest prawidłowa wedle kryteriów, któr ustalimy
+  dla każdego z widgetów */
+  isValid(value) {
+    return !isNaN(value)
+      && value <= settings.amountWidget.defaultMax
+      && value >= settings.amountWidget.defaultMin;
+  }
+
+  /* służy temu aby bieżąca wartość widgetu
+  została wyświetlona na stronie */
+  renderValue() {
     const thisWidget = this;
 
-    const newValue = parseInt(value);
-    /* konwertujemy ze stringa na liczbę */
-
-    /* TODO: add validation */
-    if (
-      thisWidget.value !== newValue
-      && !isNaN(newValue)
-      && newValue <= settings.amountWidget.defaultMax
-      && newValue >= settings.amountWidget.defaultMin
-    ) {
-      thisWidget.value = newValue;
-    }
-
-    // thisWidget.value = value;
-    /* zapisuje we właściwości thisWidget.value wartość przekazanego argumentu */
-
-    thisWidget.announce();
-    /* wywołujemy metodę announce*/
-
-    thisWidget.input.value = thisWidget.value;
+    thisWidget.dom.input.value = thisWidget.value;
   }
 
   initActions() {                                /* tworzymy metodę initActions */
     const thisWidget = this;
 
-    thisWidget.input.addEventListener('change', function () {
-      thisWidget.setValue(thisWidget.value);
-
+    thisWidget.dom.input.addEventListener('change', function () {
+      // thisWidget.setValue(thisWidget.value);
+      thisWidget.value(thisWidget.value);
     });
 
-    thisWidget.linkDecrease.addEventListener('click', function (event) {
+    thisWidget.dom.linkDecrease.addEventListener('click', function (event) {
       event.preventDefault();
       thisWidget.setValue(thisWidget.value - 1);
     });
 
-    thisWidget.linkIncrease.addEventListener('click', function (event) {
+    thisWidget.dom.linkIncrease.addEventListener('click', function (event) {
       event.preventDefault();
       thisWidget.setValue(thisWidget.value + 1);
     });
-  }
-
-  announce() {                                  /* tworzymy mnetodę announce */
-    const thisWidget = this;
-
-    const event = new CustomEvent('updated', {
-      bubbles: true
-    });
-    thisWidget.element.dispatchEvent(event);
   }
 }
 
