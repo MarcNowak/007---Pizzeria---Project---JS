@@ -172,7 +172,7 @@ dla tej konkretnej daty i godziny */
     w oparciu o wartości widgetów datePicker i hourPicker
     są to wartości wybrane aktualnie przez użytkownika */
     thisBooking.date = thisBooking.datePicker.value;
-    thisBooking.hour - utils.hourToNumber(thisBooking.hourPicker.value);
+    thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value);
 
     let allAvailable = false;
 
